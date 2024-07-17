@@ -1,0 +1,27 @@
+version: 2.1
+
+jobs:
+  deploy:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: Deploy Application
+          command: echo "Deploying..."
+
+  rollback:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: Rollback Application
+          command: echo "Rolling back..."
+
+workflows:
+  version: 2
+  deploy_and_rollback:
+    jobs:
+      - deploy
+      - rollback
