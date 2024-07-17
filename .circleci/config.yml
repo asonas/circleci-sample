@@ -21,7 +21,19 @@ jobs:
 
 workflows:
   version: 2
-  deploy_and_rollback:
+  deploy_workflow:
     jobs:
-      - deploy
-      - rollback
+      - deploy:
+          requires:
+            - approval
+      - approval:
+          type: approval
+
+  rollback_workflow:
+    jobs:
+      - rollback:
+          requires:
+            - approval
+      - approval:
+          type: approval
+
