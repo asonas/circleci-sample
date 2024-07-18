@@ -10,14 +10,6 @@ jobs:
           name: Deploy Application
           command: echo "Deploying..."
 
-  approval_deploy:
-    docker:
-      - image: circleci/node:latest
-    steps:
-      - run:
-          name: Approval for Deployment
-          command: echo "Waiting for deployment approval..."
-
   rollback:
     docker:
       - image: circleci/node:latest
@@ -31,16 +23,16 @@ workflows:
   version: 2
   deploy_workflow:
     jobs:
-      - approval_deploy:
-          type: approval
       - deploy:
           requires:
-            - approval_deploy
-      - approval_rollback:
+            - approval
+      - approval:
           type: approval
-          requires:
-            - deploy
+
+  rollback_workflow:
+    jobs:
       - rollback:
           requires:
-            - approval_rollback
-
+            - approval
+      - approval:
+          type: approval
